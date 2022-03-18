@@ -24,4 +24,5 @@ Dentre os futuros objetivos deste repositório estão:
 - Implementar o Método de Bulirsch-Stoer***
 
 > **Uma matriz utilizada para armazenar os coeficientes de um Método Runge-Kutta, formulada por John C. Butcher
+
 > ***Método que utiliza do Método do Ponto Médio Modificado e da Extrapolação de Richardson e se apresenta como um método mais eficiente em baixas tolerâncias. Formulado por Roland Bulirsch e Josef Stoer.
