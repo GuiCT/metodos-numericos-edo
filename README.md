@@ -12,7 +12,7 @@ Esse repositório visa organizar minhas implementações de métodos numéricos 
 
 > *Este método foi apresentado por Anthony Ralston em seu artigo "Runge-Kutta Methods with Minimum Error Bounds", o mesmo pode ser encontrado em https://www.ams.org/journals/mcom/1962-16-080/S0025-5718-1962-0150954-0/
 
-Além de implementar esses métodos, o repositório contém um script que permite automaticamente comparar os métodos, apresentando:
+Além de implementar esses métodos, o repositório contém um script (``TestAllMethods.m``) que permite automaticamente comparar os métodos, apresentando:
 - Tempo de execução (em milissegundos)
 - Número de chamadas a função ``f(u, t)``
 - Erro Local de Truncamento para cada passo dos métodos (caso seja apresentada uma solução exata a ser utilizada para comparação, visto que o script ainda não é capaz de estimar tal erro)
