@@ -126,12 +126,13 @@ function TestAllMethods(f, tSpan, u0, n, s, file_name, sol)
   if exist("sol")
     % Para todas as equações do sistema, criando cabeçalho para 
     % Erro Global de Trucamento (EGT)
+    print_and_save(",");
     for i = 1:X
       % Caso seja a última equação
       if i == X
         print_and_save(["EGT da Equacao " num2str(i) "\n"]);
       else
-        print_and_save([",EGT da Equacao " num2str(i)]);
+        print_and_save(["EGT da Equacao " num2str(i) ","]);
       endif
     endfor
   else
@@ -151,11 +152,12 @@ function TestAllMethods(f, tSpan, u0, n, s, file_name, sol)
     endif
     
     if exist("egt")
+      print_and_save(",");
       for i = 1:X
         if i == X
           print_and_save([num2str(egt(i)) "\n"]);
         else
-          print_and_save(["," num2str(egt(i))]);
+          print_and_save([num2str(egt(i)) ","]);
         endif
       endfor
     else
