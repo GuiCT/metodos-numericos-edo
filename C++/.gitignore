@@ -1,0 +1,6 @@
+# Visual Studio and VS Code folders
+.vs
+.vscode
+
+# CMake project compiled files
+out
