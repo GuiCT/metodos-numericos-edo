@@ -29,19 +29,6 @@
 #include <intrin.h>
 #include <cmath>
 
- /**
-   * @brief Rotina utilizada para calcular um passo utilizando o Runge-Kutta de
-   * Cash-Karp.
-   * Retorna por referência o próximo valor de u e o erro estimado a partir do
-   * método embarcado.
-   * @param[in] u Vetor contendo atuais valores de u (entrada)
-   * @param[in] dudt Vetor contendo valores de du/dt (entrada)
-   * @param[in] t Valor de t (entrada)
-   * @param[in] stepSize Tamanho do passo (entrada)
-   * @param[out] uOutput Vetor contendo novos valores de u (saída)
-   * @param[out] uError Vetor contendo erros estimados de u (saída)
-   * @param[in] dynFun Função que calcula as derivadas de primeira ordem (entrada)
-   */
 void CashKarp::CashKarpStep(
 	std::vector<double>& u,
 	std::vector<double>& dudt,
@@ -211,20 +198,6 @@ void CashKarp::CashKarpStep(
 	*/
 }
 
-/**
-  * @brief Rotina utilizada para calcular um passo utilizando o Runge-Kutta de
-  * Cash-Karp.
-  * Utiliza funções intrínsecas do conjunto de instruções AVX2.
-  * Retorna por referência o próximo valor de u e o erro estimado a partir do
-  * método embarcado.
-  * @param[in] u Vetor contendo atuais valores de u (entrada)
-  * @param[in] dudt Vetor contendo valores de du/dt (entrada)
-  * @param[in] t Valor de t (entrada)
-  * @param[in] stepSize Tamanho do passo (entrada)
-  * @param[out] uOutput Vetor contendo novos valores de u (saída)
-  * @param[out] uError Vetor contendo erros estimados de u (saída)
-  * @param[in] dynFun Função que calcula as derivadas de primeira ordem (entrada)
-  */
 void CashKarp::CashKarpStepAVX2(
 	std::vector<double>& u,
 	std::vector<double>& dudt,
@@ -601,25 +574,6 @@ void CashKarp::CashKarpStepAVX2(
 	*/
 }
 
-/**
- * @brief Rotina utilizada para calcular um passo adaptativo via Runge-Kutta de
- * Cash-Karp.
- * Tenta realizar tal passo dentro da tolerância especificada utilizando
- * stepSizeTry.
- * Refina a malha até alcançar tal objetivo ou atinge o limite de refinamento
- * da malha.
- * @param[in, out] u Vetor contendo valores de u (entrada e saída)
- * @param[in] dudt Vetor contendo valores de du/dt (entrada)
- * @param[in] uScaled Vetor armazenando a tolerância para equação do sistema
- * (entrada)
- * @param[in, out] t Valor da variável independente t (entrada e saída)
- * @param[in] stepSizeTry Primeiro valor assumido pelo passo (entrada)
- * @param[in] tolerance Tolerância de erro.
- * Dado um erro superior a esse valor, a malha será refinada (entrada)
- * @param[in] previousStepSize Valor do passo na iteração anterior (entrada)
- * @param[out] nextStepSize Valor do passo na próxima iteração (saída)
- * @param[in] dynFun Função que calcula as derivadas de primeira ordem (entrada)
- */
 void CashKarp::CashKarpQualityStep(
 	std::vector<double>& u,
 	std::vector<double>& dudt,

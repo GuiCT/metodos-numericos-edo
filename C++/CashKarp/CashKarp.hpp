@@ -120,6 +120,19 @@ namespace CashKarp {
 			std::vector<double>&)>
 		& dynFun);
 
+	/**
+		* @brief Rotina que aplica o método de Cash-Karp para realizar a integração
+		* de um determinado sistema de EDO`s em um intervalo específico.
+		* @param[in] uInitial Valores iniciais do sistema de EDO`s (entrada)
+		* @param[in] tSpan Intervalo de integração, com início e fim (entrada)
+		* @param[in] tolerance Tolerância aceita pelo algoritmo (entrada)
+		* @param[in] initialStep Passo inicial (entrada)
+		* @param[in] minimumStep Passo mínimo, atualmente não implementado (entrada)
+		* @param[in] maximumNumberOfSteps Quantidade máxima de iterações (entrada)
+		* @param[in] dynFun Função que computa os valores do sistema de EDO`s (entrada)
+		* @param[in, out] tValues Valores de t (variável independente) (entrada e saída)
+		* @param[in, out] uValues Valores de u (variável dependente) (entrada e saída)
+	*/
 	void CashKarpRange(
 		std::vector<double>& uInitial,
 		std::pair<double, double>& tSpan,
