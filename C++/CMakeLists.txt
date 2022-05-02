@@ -15,6 +15,17 @@ target_include_directories(CashKarp PUBLIC
     ${PROJECT_SOURCE_DIR}/CashKarp
 )
 
+#[[Biblioteca:
+Método da Secante]]
+
+add_library(Secant STATIC
+    ${PROJECT_SOURCE_DIR}/Secant/Secant.cpp
+)
+
+target_include_directories(Secant PUBLIC
+    ${PROJECT_SOURCE_DIR}/Secant
+)
+
 #[[Arquivo de execução, testando métodos]]
 
 add_executable(NumericalMethods 
