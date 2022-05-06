@@ -1,7 +1,7 @@
 /*
 * @file Secant.cpp
 * @author Guilherme Cesar Tomiasi (gtomiasi@gmail.com)
-* @brief Método da Secante
+* @brief MÃ©todo da Secante
 * @date 2022-05-05
 */
 
@@ -10,20 +10,20 @@
 #include <cmath>
 
 /*
-* Verifica se n0 está próximo de n1 de acordo com uma tolerância (relativa)
+* Verifica se n0 estÃ¡ prÃ³ximo de n1 de acordo com uma tolerÃ¢ncia (relativa)
 * Neste caso, n1 deve ser diferente de zero.
 * @param[in] n0 Valor a ser comparado (entrada)
-* @param[in] n1 Valor a ser comparado (tolerância aplicada a este valor, entrada)
-* @param[in] tolerance Tolerância considerada (entrada)
+* @param[in] n1 Valor a ser comparado (tolerÃ¢ncia aplicada a este valor, entrada)
+* @param[in] tolerance TolerÃ¢ncia considerada (entrada)
 */
 inline bool inRange(double n0, double n1, double tolerance) {
 	return (fabs((n1 - n0) / n1) <= tolerance);
 }
 
 /*
-* Verifica se n está próximo de zero de acordo com uma tolerância (absoluta)
+* Verifica se n estÃ¡ prÃ³ximo de zero de acordo com uma tolerÃ¢ncia (absoluta)
 * @param[in] n Valor a ser comparado (entrada)
-* @param[in] aTolerance Tolerância ABSOLUTA considerada (entrada)
+* @param[in] aTolerance TolerÃ¢ncia ABSOLUTA considerada (entrada)
 */
 inline bool closeZero(double n, double aTolerance) {
 	return (fabs(n) <= aTolerance);
@@ -38,25 +38,25 @@ double secant(
 ) {
 	/*
 	* Verificando se os dois valores utilizados para o chute inicial
-	* são iguais. Se sim, o processo é abortado a partir de uma instrução
+	* sÃ£o iguais. Se sim, o processo Ã© abortado a partir de uma instruÃ§Ã£o
 	* throw, alertando para o problema.
 	*/
 	if (x1 == x0) {
-		throw ("x1 não pode ter o mesmo valor de x0.");
+		throw ("x1 nÃ£o pode ter o mesmo valor de x0.");
 	}
 
 	double f0 = fun(x0), f1 = fun(x1);
 	double xNew;
 
-	// Verifica se alguma das entradas já é uma raiz
+	// Verifica se alguma das entradas jÃ¡ Ã© uma raiz
 	if (closeZero(f0, tolerance))
 		return x0;
 	if (closeZero(f1, tolerance))
 		return x1;
 
 	/*
-	* Verifica se f1 é menor que f0. Se sim, os valores
-	* serão trocados para que f1 seja maior que f0.
+	* Verifica se f1 Ã© menor que f0. Se sim, os valores
+	* serÃ£o trocados para que f1 seja maior que f0.
 	*/
 	if (fabs(f1 / f0) < 1.0) {
 		xNew = x0;
@@ -71,21 +71,21 @@ double secant(
 	for (iterations = 0; iterations < maxIterations; iterations++) {
 		/*
 		* Se os valores f(x0) e f(x1) convergirem, verifica se
-		* x0 e x1 também convergiram. Se esse for o caso, retorna
-		* o x resultante. Caso contrário, é executada uma instrução
-		* throw alertando para a não-convergência do método.
+		* x0 e x1 tambÃ©m convergiram. Se esse for o caso, retorna
+		* o x resultante. Caso contrÃ¡rio, Ã© executada uma instruÃ§Ã£o
+		* throw alertando para a nÃ£o-convergÃªncia do mÃ©todo.
 		*/
 		if (f1 == f0) {
 			if (x1 != x0)
-				throw ("O método falhou em atingir convergência.");
+				throw ("O mÃ©todo falhou em atingir convergÃªncia.");
 			else
 				return x0;
 		}
 		/*
-		* Realiza uma nova iteração do método.
-		* É realizada uma manipulação algébrica do passo de iteração
+		* Realiza uma nova iteraÃ§Ã£o do mÃ©todo.
+		* Ã‰ realizada uma manipulaÃ§Ã£o algÃ©brica do passo de iteraÃ§Ã£o
 		* (anteriormente: (x0 * f1 - x1 * f0) / (x1 - x0))
-		* De forma que é necessário alternar entre
+		* De forma que Ã© necessÃ¡rio alternar entre
 		* x0 / x1 <===> x1 / x0, e
 		* x0 / x1 * f1 <===> x1 / x0 * f0
 		*/
@@ -94,17 +94,17 @@ double secant(
 		else
 			xNew = (f1 - x1 / x0 * f0) / (1 - x1 / x0);
 		/*
-		* Se o valor de xNew render um resultado muito próximo
+		* Se o valor de xNew render um resultado muito prÃ³ximo
 		* do valor anterior (x1), retorna xNew.
 		*/
 		if (inRange(xNew, x1, tolerance))
 			return xNew;
-		// Atualizando valores para a próxima iteração.
+		// Atualizando valores para a prÃ³xima iteraÃ§Ã£o.
 		x0 = x1;
 		f0 = f1;
 		x1 = xNew;
 		f1 = fun(x1);
 	}
-	// Método não obteve convergência dentro do número máximo de iterações.
-	throw ("O método falhou em atingir convergência.");
+	// MÃ©todo nÃ£o obteve convergÃªncia dentro do nÃºmero mÃ¡ximo de iteraÃ§Ãµes.
+	throw ("O mÃ©todo falhou em atingir convergÃªncia.");
 }

@@ -1,20 +1,20 @@
 /**
  * @file Secant.hpp
  * @author Guilherme Cesar Tomiasi (gtomiasi@gmail.com)
- * @brief Método da Secante
+ * @brief MÃ©todo da Secante
  * @date 2022-05-05
  */
 
 #include <functional>
 
 /*
-* @brief Rotina utilizada para encontrar a raíz da função de uma variável
-* Função passada deve obedecer ao protótipo double(double)
-* @param[in] fun Função cuja raíz deseja-se encontrar (entrada)
-* @param[in] x0 Valor utilizado para primeira iteração (entrada) 
-* @param[in] x1 Valor utilizado para primeira iteração (entrada)
-* @param[in] tolerance Tolerância utilizada na execução do método (entrada)
-* @param[in] maxIterations Número máximo de iterações realizadas (entrada)
+* @brief Rotina utilizada para encontrar a raÃ­z da funÃ§Ã£o de uma variÃ¡vel
+* FunÃ§Ã£o passada deve obedecer ao protÃ³tipo double(double)
+* @param[in] fun FunÃ§Ã£o cuja raÃ­z deseja-se encontrar (entrada)
+* @param[in] x0 Valor utilizado para primeira iteraÃ§Ã£o (entrada) 
+* @param[in] x1 Valor utilizado para primeira iteraÃ§Ã£o (entrada)
+* @param[in] tolerance TolerÃ¢ncia utilizada na execuÃ§Ã£o do mÃ©todo (entrada)
+* @param[in] maxIterations NÃºmero mÃ¡ximo de iteraÃ§Ãµes realizadas (entrada)
 */
 double secant(
 	std::function<double(double)>& fun,
