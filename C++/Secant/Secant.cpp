@@ -1,9 +1,9 @@
-/**
- * @file Secant.cpp
- * @author Guilherme Cesar Tomiasi (gtomiasi@gmail.com)
- * @brief Método da Secante
- * @date 2022-05-05
- */
+/*
+* @file Secant.cpp
+* @author Guilherme Cesar Tomiasi (gtomiasi@gmail.com)
+* @brief Método da Secante
+* @date 2022-05-05
+*/
 
 #include "Secant.hpp"
 #include <functional>
@@ -11,12 +11,22 @@
 
 /*
 * Verifica se n0 está próximo de n1 de acordo com uma tolerância (relativa)
+* Neste caso, n1 deve ser diferente de zero.
 * @param[in] n0 Valor a ser comparado (entrada)
 * @param[in] n1 Valor a ser comparado (tolerância aplicada a este valor, entrada)
 * @param[in] tolerance Tolerância considerada (entrada)
 */
 inline bool inRange(double n0, double n1, double tolerance) {
-	return (std::abs(n1 - n0) <= tolerance * std::abs(n1));
+	return (fabs((n1 - n0) / n1) <= tolerance);
+}
+
+/*
+* Verifica se n está próximo de zero de acordo com uma tolerância (absoluta)
+* @param[in] n Valor a ser comparado (entrada)
+* @param[in] aTolerance Tolerância ABSOLUTA considerada (entrada)
+*/
+inline bool closeZero(double n, double aTolerance) {
+	return (fabs(n) <= aTolerance);
 }
 
 double secant(
@@ -34,21 +44,21 @@ double secant(
 	if (x1 == x0) {
 		throw ("x1 não pode ter o mesmo valor de x0.");
 	}
-	
+
 	double f0 = fun(x0), f1 = fun(x1);
 	double xNew;
 
 	// Verifica se alguma das entradas já é uma raiz
-	if (inRange(f0, 0.0, tolerance))
+	if (closeZero(f0, tolerance))
 		return x0;
-	if (inRange(f1, 0.0, tolerance))
+	if (closeZero(f1, tolerance))
 		return x1;
 
 	/*
 	* Verifica se f1 é menor que f0. Se sim, os valores
 	* serão trocados para que f1 seja maior que f0.
 	*/
-	if (std::abs(f1) < std::abs(f0)) {
+	if (fabs(f1 / f0) < 1.0) {
 		xNew = x0;
 		x0 = x1;
 		x1 = xNew;
@@ -79,7 +89,7 @@ double secant(
 		* x0 / x1 <===> x1 / x0, e
 		* x0 / x1 * f1 <===> x1 / x0 * f0
 		*/
-		if (std::abs(f1) > std::abs(f0))
+		if (fabs(f1 / f0) > 1.0)
 			xNew = (f0 - x0 / x1 * f1) / (1 - x0 / x1);
 		else
 			xNew = (f1 - x1 / x0 * f0) / (1 - x1 / x0);
