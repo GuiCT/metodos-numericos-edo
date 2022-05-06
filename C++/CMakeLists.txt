@@ -41,3 +41,7 @@ endif(USE_AVX)
 target_link_libraries(NumericalMethods PRIVATE
     CashKarp
 )
+
+target_link_libraries(NumericalMethods PRIVATE
+    Secant
+)
