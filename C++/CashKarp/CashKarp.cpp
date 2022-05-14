@@ -1,25 +1,24 @@
 /**
- * @file CashKarp.cpp
- * @author Guilherme Cesar Tomiasi (gtomiasi@gmail.com)
- * @brief Algoritmo de Cash-Karp (Runge-Kutta com passo adaptativo)
- * @date 2022-04-03
- */
+* @file CashKarp.cpp
+* @author Guilherme Cesar Tomiasi (gtomiasi@gmail.com)
+* @brief Algoritmo de Cash-Karp (Runge-Kutta com passo adaptativo)
+* @date 2022-04-03
+*/
 
- /*
-  *  Essa implementaÃƒÂ§ÃƒÂ£o ÃƒÂ© baseada na seÃƒÂ§ÃƒÂ£o 16.2 do livro "Numerical Recipes in
-	 C",
-	 escrito pelos autores:
-	 - William H. Press
-	 - Saul A. Teukolsky
-	 - William T. Vetterling
-	 - Brian P. Flannery
-	 cujo cÃƒÂ³digo ISBN ÃƒÂ© 0-521-43108-5
+/*
+	*  Essa implementação é baseada na seção 16.2 do livro "Numerical Recipes in
+	C", escrito pelos autores:
+	- William H. Press
+	- Saul A. Teukolsky
+	- William T. Vetterling
+	- Brian P. Flannery
+	cujo código ISBN é 0-521-43108-5
 
-  *  As implementaÃƒÂ§ÃƒÂµes deste arquivo, no entanto, nÃƒÂ£o utilizam a Linguagem C,
-	 mas sim a Linguagem C++. NÃƒÂ£o interprete essas implementaÃƒÂ§ÃƒÂµes como uma
-	 simples cÃƒÂ³pia dos mÃƒÂ©todos apresentados no livro, mas uma adaptaÃƒÂ§ÃƒÂ£o para
-	 facilitar a leitura dos mÃƒÂ©todos ÃƒÂ  luz de uma visÃƒÂ£o acadÃƒÂªmica.
- */
+	*  As implementações deste arquivo, no entanto, não utilizam a Linguagem C,
+	mas sim a Linguagem C++. Não interprete essas implementações como uma
+	simples cópia dos métodos apresentados no livro, mas uma adaptação para
+	facilitar a leitura dos métodos à luz de uma visão acadêmica.
+*/
 
 #include "CashKarp.hpp"
 #include <utility>
@@ -45,16 +44,16 @@ void CashKarp::CashKarpStep(
 	>& dynFun)
 {
 	/*
-		Valor dos coeficientes ÃƒÂ© constante, logo sÃƒÂ£o utilizadas
-		variÃƒÂ¡veis estÃƒÂ¡ticas.
+		Valor dos coeficientes é constante, logo são utilizadas
+		variáveis estáticas.
 
 		Coefficient values are constants, hence the use of
 		static variables.
 	*/
 
 	/*
-		Coeficientes 'c', determinam mudanÃƒÂ§a no valor de 't' para
-		cada valor intermediÃƒÂ¡rio.
+		Coeficientes 'c', determinam mudança no valor de 't' para
+		cada valor intermediário.
 
 		'C' coefficients, determining the change in the value of 't'
 		for each intermediate.
@@ -66,8 +65,8 @@ void CashKarp::CashKarpStep(
 		c6 = 7.0 / 8.0;
 
 	/*
-		Coeficientes 'a', determinam participaÃƒÂ§ÃƒÂ£o de cada valor
-		intermediÃƒÂ¡rio na mudanÃƒÂ§a do valor de 'u' para os intermediÃƒÂ¡rios
+		Coeficientes 'a', determinam participação de cada valor
+		intermediário na mudança do valor de 'u' para os intermediários
 		subsequentes.
 
 		'A' coefficients, determining the weight of intermediate values
@@ -83,8 +82,8 @@ void CashKarp::CashKarpStep(
 		a65 = 253.0 / 4096.0;
 
 	/*
-		Coeficientes 'b', determinam participaÃƒÂ§ÃƒÂ£o de cada valor
-		intermediÃƒÂ¡rio no cÃƒÂ¡lculo do valor final de 'u'.
+		Coeficientes 'b', determinam participação de cada valor
+		intermediário no cálculo do valor final de 'u'.
 
 		'B' coefficients, determining the weight of intermediate
 		values when calculating the final value of 'u'.
@@ -95,8 +94,8 @@ void CashKarp::CashKarpStep(
 		b6 = 512.0 / 1771.0;
 
 	/*
-		Coeficientes 'd', diferenÃƒÂ§a entre o coeficiente b do mÃƒÂ©todo
-		principal e o mÃƒÂ©todo embarcado. Ãƒâ€° utilizado para estimar o erro.
+		Coeficientes 'd', diferença entre o coeficiente b do método
+		principal e o método embarcado. É utilizado para estimar o erro.
 
 		'D' coefficients, the difference between the 'b' coefficients
 		of the main method and the embedded method. It is used to
@@ -118,10 +117,10 @@ void CashKarp::CashKarpStep(
 	std::vector<double> uTemporary(uSize);
 
 	/*
-		Calculando valores intermediÃƒÂ¡rios k1, k2, ..., k6
+		Calculando valores intermediários k1, k2, ..., k6
 		Calculating intermediate values
 
-		Uma iteraÃƒÂ§ÃƒÂ£o do loop para cada equaÃƒÂ§ÃƒÂ£o presente no sistema
+		Uma iteração do loop para cada equação presente no sistema
 		One iteration of the for-loop for each equation in the system
 	*/
 	for (i = 0; i < uSize; i++)
@@ -163,7 +162,7 @@ void CashKarp::CashKarpStep(
 	dynFun(t + c6 * stepSize, uTemporary, k6);
 
 	/*
-		Calculando valor na precisÃƒÂ£o de quarta ordem
+		Calculando valor na precisão de quarta ordem
 	*/
 	for (i = 0; i < uSize; i++)
 	{
@@ -175,12 +174,10 @@ void CashKarp::CashKarpStep(
 	}
 
 	/*
-		Estimando erro a partir da diferenÃƒÂ§a entre quarta ordem e quinta ordem
-		NÃƒÂ£o ÃƒÂ© necessÃƒÂ¡rio calcular o valor de quinta ordem, visto que
-		algebricamente
-		ÃƒÂ© possÃƒÂ­vel prever qual serÃƒÂ¡ a diferenÃƒÂ§a, tendo em vista que os
-		coeficientes
-		da tabela de Butcher sÃƒÂ£o constantes.
+		Estimando erro a partir da diferença entre quarta ordem e quinta ordem
+		Não é necessário calcular o valor de quinta ordem, visto que
+		algebricamente é possível prever qual será a diferença,
+		tendo em vista que os coeficientes da tabela de Butcher são constantes.
 	*/
 	for (i = 0; i < uSize; i++)
 	{
@@ -193,7 +190,7 @@ void CashKarp::CashKarpStep(
 	}
 
 	/*
-		Fim do mÃƒÂ©todo
+		Fim do método
 		End of the function
 	*/
 }
@@ -214,16 +211,16 @@ void CashKarp::CashKarpStepAVX2(
 	>& dynFun)
 {
 	/*
-		Valor dos coeficientes ÃƒÂ© constante, logo sÃƒÂ£o utilizadas
-		variÃƒÂ¡veis estÃƒÂ¡ticas.
+		Valor dos coeficientes é constante, logo são utilizadas
+		variáveis estáticas.
 
 		Coefficient values are constants, hence the use of
 		static variables.
 	*/
 
 	/*
-		Coeficientes 'c', determinam mudanÃƒÂ§a no valor de 't' para
-		cada valor intermediÃƒÂ¡rio.
+		Coeficientes 'c', determinam mudança no valor de 't' para
+		cada valor intermediário.
 
 		'C' coefficients, determining the change in the value of 't'
 		for each intermediate.
@@ -235,8 +232,8 @@ void CashKarp::CashKarpStepAVX2(
 		c6 = 7.0 / 8.0;
 
 	/*
-		Coeficientes 'a', determinam participaÃƒÂ§ÃƒÂ£o de cada valor
-		intermediÃƒÂ¡rio na mudanÃƒÂ§a do valor de 'u' para os intermediÃƒÂ¡rios
+		Coeficientes 'a', determinam participação de cada valor
+		intermediário na mudança do valor de 'u' para os intermediários
 		subsequentes.
 
 		'A' coefficients, determining the weight of intermediate values
@@ -252,8 +249,8 @@ void CashKarp::CashKarpStepAVX2(
 		a65 = 253.0 / 4096.0;
 
 	/*
-		Coeficientes 'b', determinam participaÃƒÂ§ÃƒÂ£o de cada valor
-		intermediÃƒÂ¡rio no cÃƒÂ¡lculo do valor final de 'u'.
+		Coeficientes 'b', determinam participação de cada valor
+		intermediário no cálculo do valor final de 'u'.
 
 		'B' coefficients, determining the weight of intermediate
 		values when calculating the final value of 'u'.
@@ -264,8 +261,8 @@ void CashKarp::CashKarpStepAVX2(
 		b6 = 512.0 / 1771.0;
 
 	/*
-		Coeficientes 'd', diferenÃƒÂ§a entre o coeficiente b do mÃƒÂ©todo
-		principal e o mÃƒÂ©todo embarcado. Ãƒâ€° utilizado para estimar o erro.
+		Coeficientes 'd', diferença entre o coeficiente b do método
+		principal e o método embarcado. É utilizado para estimar o erro.
 
 		'D' coefficients, the difference between the 'b' coefficients
 		of the main method and the embedded method. It is used to
@@ -293,7 +290,7 @@ void CashKarp::CashKarpStepAVX2(
 	__m256d _aux, _aux2, _k2, _k3, _k4, _k5, _k6;
 
 	/*
-		Calculando valores intermediÃƒÂ¡rios k1, k2, ..., k6
+		Calculando valores intermediários k1, k2, ..., k6
 		Calculating intermediate values
 	*/
 
@@ -472,7 +469,7 @@ void CashKarp::CashKarpStepAVX2(
 	_k6 = _mm256_maskload_pd(kTemporary.data(), _mask);
 
 	/*
-		Calculando valor na precisÃƒÂ£o de quarta ordem
+		Calculando valor na precisão de quarta ordem
 		uOutput =
 			u + stepSize * (b1 * dudt +
 							   b3 * k3 +
@@ -515,19 +512,10 @@ void CashKarp::CashKarpStepAVX2(
 	uOutput.assign(aux, aux + uSize);
 
 	/*
-		Estimando erro a partir da diferenÃƒÂ§a entre quarta ordem e quinta ordem
-		NÃƒÂ£o ÃƒÂ© necessÃƒÂ¡rio calcular o valor de quinta ordem, visto que
-		algebricamente
-		ÃƒÂ© possÃƒÂ­vel prever qual serÃƒÂ¡ a diferenÃƒÂ§a, tendo em vista que os
-		coeficientes
-		da tabela de Butcher sÃƒÂ£o constantes.
-
-		uError =
-			stepSize * (d1 * dudt +
-						d3 * k3 +
-						d4 * k4 +
-						d5 * k5 +
-						d6 * k6);
+		Estimando erro a partir da diferença entre quarta ordem e quinta ordem
+		Não é necessário calcular o valor de quinta ordem, visto que
+		algebricamente é possível prever qual será a diferença,
+		tendo em vista que os coeficientes da tabela de Butcher são constantes.
 	*/
 
 	// d1 * dudt
@@ -569,7 +557,7 @@ void CashKarp::CashKarpStepAVX2(
 	uError.assign(aux, aux + uSize);
 
 	/*
-		Fim do mÃƒÂ©todo
+		Fim do método
 		End of the function
 	*/
 }
@@ -598,23 +586,35 @@ void CashKarp::CashKarpQualityStep(
 	static double errorComparingValue = std::pow(5.0 / 0.9, 1.0 / -0.2);
 
 	/*
-		Primeira tentativa serÃƒÂ¡ feita utilizando o parÃƒÂ¢metro stepSizeTry.
+		* Verificando se é possivel utilizar função que faz uso dos
+		intrínsecos AVX2.
+		* Será possível se:
+		-> O sistema de equações tiver 4 equações ou menos.
+		-> O sistema oferecer suporte à instruções AVX2.
+	*/
+	bool useAVX = (__AVX2__ == 1) && (uSize <= 4);
+
+	/*
+		Primeira tentativa será feita utilizando o parâmetro stepSizeTry.
 	*/
 	stepSize = stepSizeTry;
 	while (true)
 	{
-		CASH_KARP_STEP(u, dudt, t, stepSize, uTemporary, uError, dynFun);
+		if (useAVX)
+			CashKarpStepAVX2(u, dudt, t, stepSize, uTemporary, uError, dynFun);
+		else
+			CashKarpStep(u, dudt, t, stepSize, uTemporary, uError, dynFun);
 
 		/*
-			Identificando maior erro no sistema de equaÃƒÂ§ÃƒÂµes.
-			Aqui o erro ÃƒÂ© definido como o mÃƒÂ³dulo do erro estimado na
-			soluÃƒÂ§ÃƒÂ£o de uma equaÃƒÂ§ÃƒÂ£o do sistema dividido pela tolerÃƒÂ¢ncia da mesma.
+			Identificando maior erro no sistema de equações.
+			Aqui o erro é definido como o módulo do erro estimado na
+			solução de uma equação do sistema dividido pela tolerância da mesma.
 
-			EquaÃƒÂ§ÃƒÂµes possuem tolerÃƒÂ¢ncias diferentes pois funÃƒÂ§ÃƒÂµes que
+			Equações possuem tolerâncias diferentes pois funções que
 			apresentam valores muito maiores tendem a apresentar
-			erro proporcionalmente maior tambÃƒÂ©m. Para contrapor tal efeito
-			ÃƒÂ© utilizado o vetor de valores uScaled, que leva a ordem de
-			grandeza destes valores em conta para apresentar suas tolerÃƒÂ¢ncias.
+			erro proporcionalmente maior também. Para contrapor tal efeito
+			é utilizado o vetor de valores uScaled, que leva a ordem de
+			grandeza destes valores em conta para apresentar suas tolerâncias.
 		*/
 		maximumError = 0.0;
 		for (i = 0; i < uSize; i++) {
@@ -626,12 +626,12 @@ void CashKarp::CashKarpQualityStep(
 		}
 
 		/*
-			Comparando esse erro com a tolerÃƒÂ¢ncia especificada.
-			Se for menor, o loop ÃƒÂ© finalizado pois foi encontrada
-			uma soluÃƒÂ§ÃƒÂ£o dentro da tolerÃƒÂ¢ncia exigida.
+			Comparando esse erro com a tolerância especificada.
+			Se for menor, o loop é finalizado pois foi encontrada
+			uma solução dentro da tolerância exigida.
 
-			Aqui nÃƒÂ£o ÃƒÂ© necessÃƒÂ¡rio utilizar uScaled, pois o erro
-			jÃƒÂ¡ foi normalizado na etapa anterior.
+			Aqui não é necessário utilizar uScaled, pois o erro
+			já foi normalizado na etapa anterior.
 		*/
 		maximumError /= tolerance;
 
@@ -639,7 +639,7 @@ void CashKarp::CashKarpQualityStep(
 			break;
 
 		/*
-			Caso contrÃƒÂ¡rio, ÃƒÂ© necessÃƒÂ¡rio calcular um novo stepSize.
+			Caso contrário, é necessário calcular um novo stepSize.
 		*/
 		temporaryStepSize = 0.9 * stepSize * std::pow(maximumError, -0.25);
 		stepSize =
@@ -647,9 +647,9 @@ void CashKarp::CashKarpQualityStep(
 			? std::max(temporaryStepSize, 0.1 * stepSize)
 			: std::min(temporaryStepSize, 0.1 * stepSize);
 		/*
-			Avaliando qual serÃƒÂ¡ o prÃƒÂ³ximo valor de t com base no
+			Avaliando qual será o próximo valor de t com base no
 			novo stepSize. Se esse novo valor for igual ao antigo,
-			alerta-se para um erro matemÃƒÂ¡tico.
+			alerta-se para um erro matemático.
 		*/
 		tNew = t + stepSize;
 
@@ -658,11 +658,11 @@ void CashKarp::CashKarpQualityStep(
 	}
 
 	/*
-		Calculando valor de stepSize para o prÃƒÂ³ximo passo adaptativo.
+		Calculando valor de stepSize para o próximo passo adaptativo.
 		Se o valor do erro no passo adaptativo atual for pequeno,
-		tentaremos um stepSize maior, assumindo que serÃƒÂ¡ suficiente
-		para o prÃƒÂ³ximo passo adaptativo. Caso contrÃƒÂ¡rio, serÃƒÂ¡
-		novamente diminuÃƒÂ­do.
+		tentaremos um stepSize maior, assumindo que será suficiente
+		para o próximo passo adaptativo. Caso contrário, será
+		novamente diminuÃ­do.
 	*/
 	nextStepSize =
 		(maximumError > errorComparingValue)
@@ -671,13 +671,13 @@ void CashKarp::CashKarpQualityStep(
 
 	/*
 		Armazenando valor do stepSize utilizado e
-		atualizando valor da variÃƒÂ¡vel independente t.
+		atualizando valor da variável independente t.
 	*/
 	previousStepSize = stepSize;
 	t += previousStepSize;
 
 	/*
-		Salvando valores de u e encerrando o mÃƒÂ©todo.
+		Salvando valores de u e encerrando o método.
 	*/
 	u = uTemporary;
 }
