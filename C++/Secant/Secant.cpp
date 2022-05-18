@@ -79,20 +79,22 @@ double secant(
 			if (x1 != x0)
 				throw ("O método falhou em atingir convergência.");
 			else
-				return x0;
+				return (x0 + x1)/2.0;
 		}
-		/*
-		* Realiza uma nova iteração do método.
-		* É realizada uma manipulação algébrica do passo de iteração
-		* (anteriormente: (x0 * f1 - x1 * f0) / (x1 - x0))
-		* De forma que é necessário alternar entre
-		* x0 / x1 <===> x1 / x0, e
-		* x0 / x1 * f1 <===> x1 / x0 * f0
-		*/
-		if (fabs(f1 / f0) > 1.0)
-			xNew = (f0 - x0 / x1 * f1) / (1 - x0 / x1);
-		else
-			xNew = (f1 - x1 / x0 * f0) / (1 - x1 / x0);
+		else {
+			/*
+			* Realiza uma nova iteração do método.
+			* É realizada uma manipulação algébrica do passo de iteração
+			* (anteriormente: (x0 * f1 - x1 * f0) / (x1 - x0))
+			* De forma que é necessário alternar entre
+			* x0 / x1 <===> x1 / x0, e
+			* x0 / x1 * f1 <===> x1 / x0 * f0
+			*/
+			if (fabs(f1 / f0) > 1.0)
+				xNew = (-f0 / f1 * x1 + x0) / (1 - f0 / f1);
+			else
+				xNew = (-f1 / f0 * x0 + x1) / (1 - f1 / f0);
+		}
 		/*
 		* Se o valor de xNew render um resultado muito próximo
 		* do valor anterior (x1), retorna xNew.
