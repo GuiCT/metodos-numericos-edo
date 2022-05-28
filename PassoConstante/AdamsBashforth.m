@@ -35,6 +35,8 @@ function [u, info] = AdamsBashforth(f, tSpan, u0, n, s)
   t = linspace(tSpan(1), tSpan(2), n);
   % Inicializando número de cálculos de f.
   info.nEvals = 0;
+  % Valores anteriores de f(t, u)
+  f0 = zeros(X, s);
   % Guarda clock do momento antes do cálculo.
   clock0 = clock();
   
@@ -42,21 +44,26 @@ function [u, info] = AdamsBashforth(f, tSpan, u0, n, s)
   % Método de passo simples utilizado foi o Runge-Kutta de Ralston.
   for i = 2 : min(s, n)
     % Todos as linhas da coluna i são calculadas de uma vez.
-    u(:, i) = RungeKuttaRalstonStep(f, t(i-1), u(:, i-1), h);
+    [u(:, i), f0(:, i-1)] = RungeKuttaRalstonStep(f, t(i-1), u(:, i-1), h);
     % A função f é chamada quatro vezes no método RK-Ralston.
     info.nEvals += 4;
   endfor
   
   % A partir do s+1 ponto, utiliza Adams-Bashforth
   for i = s+1 : n
+    % Se NÃO for primeiro passo múltiplo
+    if i != s+1
+      % Deslocar cada valor uma unidade para trás.
+      f0 = shift(f0, -1);
+    endif
+    f0(:, end) = f(t(i-1), u(:, i-1));
     % São passadas mais de uma coluna para a função AdamsBashforthStep,
     % visto que o método é de passo múltiplo e requer mais de um ponto
     % para todas as equações no sistema.
-    % No caso, são passados os s pontos anteriores, visto que
-    % são utilizados s estágios.
-    u(:, i) = AdamsBashforthStep(f, t(i-s : i-1), u(:, i-s : i-1), h, s);
-    % A função f é chamada s vezes quando há s estágios presentes.
-    info.nEvals += s;
+    % No caso, são passados os s valores anteriores de f(t, u).
+    u(:, i) = AdamsBashforthStep(f, f0, u(:, i-1), h, s);
+    % A função f é chamada 1 vez.
+    info.nEvals += 1;
   endfor
   % Calculando tempo total de execução.
   % Diferença entre o momento atual dado por clock() e
@@ -65,13 +72,13 @@ function [u, info] = AdamsBashforth(f, tSpan, u0, n, s)
   % transformado em milissegundos ao multiplicar por 1000.
   info.tElapsed = etime(clock(), clock0)*1000;
 endfunction
-function u = AdamsBashforthStep(f, t0, u0, h, s)
+function u = AdamsBashforthStep(f, f0, u0, h, s)
 % u = AdamsBashforthStep(f, t0, u0, h, s)
 % Executa um passo do método numérico de Adams-Bashforth.
 % INPUTS:
 %   f = função du/dt = f(t, u)
-%   t0 = valores anteriores de t
-%   u0 = valores anteriores de u
+%   f0 = valores anteriores de f(t, u)
+%   u0 = último valor anterior de u
 %   h = passo da malha
 %   s = quantidade de estágios utilizados
 % OUTPUTS:
@@ -91,18 +98,18 @@ function u = AdamsBashforthStep(f, t0, u0, h, s)
   ];
   
   % Tamanho do vetor de pontos conhecidos
-  n = size(u0)(2);
+  n = size(f0)(2);
   % Último valor conhecido
-  u = u0(:, n);
+  u = u0;
   % Valor auxiliar
   aux = n + 1;
   
   for i = 1 : s
     % Adiciona termo a termo do método de Adams-Bashforth.
-    u += h*C(s, i)*f(t0(aux-i), u0(:, aux-i));
+    u += h*C(s, i)*f0(aux-i);
   endfor
 endfunction
-function u = RungeKuttaRalstonStep(f, t0, u0, h)
+function [u, f0] = RungeKuttaRalstonStep(f, t0, u0, h)
 % u = RungeKuttaRalstonStep(f, t0, u0, h)
 % Executa um passo do método numérico RK de Ralston.
 % INPUTS:
@@ -112,10 +119,12 @@ function u = RungeKuttaRalstonStep(f, t0, u0, h)
 %   h = passo da malha
 % OUTPUTS:
 %   u = próximo valor de u
+%   f0 = valor de f(t0, u0)
 
   k1 = f(t0, u0);
   k2 = f(t0 + 0.4*h, u0 + 0.4*h*k1);
   k3 = f(t0 + 0.45573725*h, u0 + 0.29697761*h*k1 + 0.15875964*h*k2);
   k4 = f(t0 + h, u0 + 0.21810040*h*k1 - 3.05096516*h*k2 + 3.83286476*h*k3);
   u = u0 + h*(0.17476028*k1 - 0.55148066*k2 + 1.20553560*k3 + 0.17118478*k4);
+  f0 = k1;
 endfunction
