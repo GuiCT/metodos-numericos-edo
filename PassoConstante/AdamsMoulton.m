@@ -37,6 +37,8 @@ function [u, info] = AdamsMoulton(f, tSpan, u0, n, s)
   t = linspace(tSpan(1), tSpan(2), n);
   % Inicializando número de cálculos de f.
   info.nEvals = 0;
+  % Valores anteriores de f(t, u)
+  f0 = zeros(X, s);
   % Guarda clock do momento antes do cálculo.
   clock0 = clock();
   
@@ -51,12 +53,19 @@ function [u, info] = AdamsMoulton(f, tSpan, u0, n, s)
   
   % A partir do s+1 ponto, utiliza Adams-Moulton.
   for i = s+1 : n
+    % Se NÃO for primeiro passo múltiplo
+    if i != s+1
+      % Deslocar cada valor uma unidade para trás.
+      f0 = shift(f0, -1);
+    endif
+    f0(:, end) = f(t(i-1), u(:, i-1));
     % São passadas mais de uma coluna para a função AdamsBashforthStep,
     % visto que o método é de passo múltiplo e requer mais de um ponto
     % para todas as equações no sistema.
+    predicted = AdamsBashforthStep(f, f0, u(:, i-1), h, s) 
     % No caso, são passados os s pontos anteriores, visto que
     % são utilizados s estágios.
-    u(:, i) = AdamsMoultonStep(f, t(i-s:i), u(:, i-s:i-1), h, s);
+    u(:, i) = AdamsMoultonStep(f, f0, u(:, i-1), f(t(i), predicted), h, s);
     % A função f é chamada 2*s vezes quando há s estágios presentes.
     % s vezes para calcular o preditor usando Adams-Bashforth.
     % s vezes para calcular o corretor usando Adams-Moulton.
@@ -69,14 +78,14 @@ function [u, info] = AdamsMoulton(f, tSpan, u0, n, s)
   % transformado em milissegundos ao multiplicar por 1000.
   info.tElapsed = etime(clock(), clock0)*1000;
 endfunction
-
-function u = AdamsMoultonStep(f, t0, u0, h, s)
+function u = AdamsMoultonStep(f, f0, u0, f_predicted, h, s)
 % u = AdamsMoultonStep(f, t0, u0, h, s)
 % Executa um passo do método numérico de Adams-Moulton.
 % INPUTS:
 %   f = função du/dt = f(t, u)
-%   t0 = valores anteriores de t
-%   u0 = valores anteriores de u
+%   f0 = valores anteriores de f(t, u)
+%   u0 = último valor de anterior u
+%   f_predicted = valor de f(t, u) utilizando preditor
 %   h = passo da malha
 %   s = quantidade de estágios utilizados
 % OUTPUTS:
@@ -96,28 +105,26 @@ function u = AdamsMoultonStep(f, t0, u0, h, s)
   ];
   
   % Tamanho do vetor de pontos conhecidos.
-  n = size(u0)(2);
+  n = size(f0)(2);
   % Último valor conhecido.
-  u = u0(:, n);
+  u = u0;
   % Valor auxiliar.
   aux = n + 2;
-  % Valor do preditor.
-  predicted = AdamsBashforthStep(f, t0(1:n), u0, h, s);
   % Somando primeiro termo.
-  u += h*C(s, 1)*f(t0(n+1), predicted);
+  u += h*C(s, 1)*f_predicted;
   
   for i = 2 : s
     % Adiciona termo a termo do método de Adams-Moulton.
-    u += h*C(s, i)*f(t0(aux-i), u0(:, aux-i));
+    u += h*C(s, i)*f0(aux-i);
   endfor
 endfunction
-function u = AdamsBashforthStep(f, t0, u0, h, s)
+function u = AdamsBashforthStep(f, f0, u0, h, s)
 % u = AdamsBashforthStep(f, t0, u0, h, s)
 % Executa um passo do método numérico de Adams-Bashforth.
 % INPUTS:
 %   f = função du/dt = f(t, u)
-%   t0 = valores anteriores de t
-%   u0 = valores anteriores de u
+%   f0 = valores anteriores de f(t, u)
+%   u0 = último valor anterior de u
 %   h = passo da malha
 %   s = quantidade de estágios utilizados
 % OUTPUTS:
@@ -137,15 +144,15 @@ function u = AdamsBashforthStep(f, t0, u0, h, s)
   ];
   
   % Tamanho do vetor de pontos conhecidos
-  n = size(u0)(2);
+  n = size(f0)(2);
   % Último valor conhecido
-  u = u0(:, n);
+  u = u0;
   % Valor auxiliar
   aux = n + 1;
   
   for i = 1 : s
     % Adiciona termo a termo do método de Adams-Bashforth.
-    u += h*C(s, i)*f(t0(aux-i), u0(:, aux-i));
+    u += h*C(s, i)*f0(aux-i);
   endfor
 endfunction
 function u = RungeKuttaRalstonStep(f, t0, u0, h)
