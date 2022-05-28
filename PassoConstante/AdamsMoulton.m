@@ -62,7 +62,7 @@ function [u, info] = AdamsMoulton(f, tSpan, u0, n, s)
     % São passadas mais de uma coluna para a função AdamsBashforthStep,
     % visto que o método é de passo múltiplo e requer mais de um ponto
     % para todas as equações no sistema.
-    predicted = AdamsBashforthStep(f, f0, u(:, i-1), h, s) 
+    predicted = AdamsBashforthStep(f, f0, u(:, i-1), h, s);
     % No caso, são passados os s pontos anteriores, visto que
     % são utilizados s estágios.
     u(:, i) = AdamsMoultonStep(f, f0, u(:, i-1), f(t(i), predicted), h, s);
