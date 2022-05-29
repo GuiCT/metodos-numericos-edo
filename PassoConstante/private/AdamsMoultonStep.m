@@ -24,17 +24,10 @@ function u = AdamsMoultonStep(f, f0, u0, f_predicted, h, s)
     [5257/17280, 139849/120960, -4511/4480, 123133/120960, -88547/120960, 1537/4480, -11351/120960, 275/24192]
   ];
   
-  % Tamanho do vetor de pontos conhecidos.
-  n = size(f0)(2);
   % Último valor conhecido.
   u = u0;
-  % Valor auxiliar.
-  aux = n + 2;
-  % Somando primeiro termo.
+  % Somando primeiro termo (utiliza preditor).
   u += h*C(s, 1)*f_predicted;
-  
-  for i = 2 : s
-    % Adiciona termo a termo do método de Adams-Moulton.
-    u += h*C(s, i)*f0(aux-i);
-  endfor
+  % Somando termos restantes.
+  u += h*dot(C(s, 2:s), fliplr(f0));
 endfunction

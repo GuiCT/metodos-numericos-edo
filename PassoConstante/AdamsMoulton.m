@@ -65,7 +65,9 @@ function [u, info] = AdamsMoulton(f, tSpan, u0, n, s)
     predicted = AdamsBashforthStep(f, f0, u(:, i-1), h, s);
     % No caso, são passados os s pontos anteriores, visto que
     % são utilizados s estágios.
-    u(:, i) = AdamsMoultonStep(f, f0, u(:, i-1), f(t(i), predicted), h, s);
+    % s-1 já foram calculados anteriormente, sendo o outro
+    % o valor do preditor calculado anteriormente.
+    u(:, i) = AdamsMoultonStep(f, f0(2:end), u(:, i-1), f(t(i), predicted), h, s);
     % A função f é chamada 2*s vezes quando há s estágios presentes.
     % s vezes para calcular o preditor usando Adams-Bashforth.
     % s vezes para calcular o corretor usando Adams-Moulton.

@@ -9,9 +9,15 @@ function u = RungeKutta4Step(f, t0, u0, h)
 % OUTPUTS:
 %   u = próximo valor de u
 
-  k1 = f(t0, u0);
-  k2 = f(t0 + h/2, u0 + (h/2)*k1);
-  k3 = f(t0 + h/2, u0 + (h/2)*k2);
-  k4 = f(t0 + h, u0 + h*k3);
-  u = u0 + h*(k1/6 + k2/3 + k3/3 + k4/6);
+  persistent A = [0,    0,    0,  0;
+                  1/2,  0,    0,  0;
+                  0,    1/2,  0,  0;
+                  0,    0,    1,  0];
+  persistent B = [1/6, 1/3, 1/3, 1/6];
+  persistent C = [0, 1/2, 1/2, 1];
+  k = zeros(1, 4);
+  for i=1:4
+    k(i) = f(t0 + h*C(i), u0 + h*dot(A(i,:), k));
+  endfor
+  u = u0 + h*dot(B, k);
 endfunction

@@ -23,15 +23,8 @@ function u = AdamsBashforthStep(f, f0, u0, h, s)
     [16083/4480, -1152169/120960, 242653/13440, -296053/13440, 2102243/120960, -115747/13440, 32863/13440, -5257/17280]
   ];
   
-  % Tamanho do vetor de pontos conhecidos
-  n = size(f0)(2);
   % Último valor conhecido
   u = u0;
-  % Valor auxiliar
-  aux = n + 1;
-  
-  for i = 1 : s
-    % Adiciona termo a termo do método de Adams-Bashforth.
-    u += h*C(s, i)*f0(aux-i);
-  endfor
+  % Adiciona termo a termo do método de Adams-Bashforth.
+  u += h*dot(C(s,1:s), fliplr(f0));
 endfunction
