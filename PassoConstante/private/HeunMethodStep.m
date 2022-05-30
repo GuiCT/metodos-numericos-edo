@@ -1,15 +1,12 @@
 function u = HeunMethodStep(f, t0, u0, h)
-% u = HeunMethodStep(f, t0, u0, h)
-% Executa um passo do método numérico de Heun.
-% INPUTS:
-%   f = função du/dt = f(t, u)
-%   t0 = valor atual de t
-%   u0 = valor atual de u
-%   h = passo da malha
-% OUTPUTS:
-%   u = próximo valor de u
-
-  k1 = f(t0, u0);
-  predicted = u0 + h*k1;
-  u = u0 + h*((k1 + f(t0 + h, predicted))/2);
+  persistent A = [0, 0;
+                  1, 0];
+  persistent B = [1/2, 1/2];
+  persistent C = [0, 1];
+  k_size = max(size(B));
+  k = zeros(k_size, max(size(u0)));
+  for i=1:k_size
+    k(i, :) = f(t0 + h*C(i), u0 + h*sum(A(i,:)'.*k));
+  endfor
+  u = u0 + h*sum(B'.*k);
 endfunction

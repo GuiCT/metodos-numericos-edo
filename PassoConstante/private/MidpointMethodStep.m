@@ -1,13 +1,12 @@
 function u = MidpointMethodStep(f, t0, u0, h)
-% u = MidpointMethodStep(f, t0, u0, h)
-% Executa um passo do método numérico do ponto médio.
-% INPUTS:
-%   f = função du/dt = f(t, u)
-%   t0 = valor atual de t
-%   u0 = valor atual de u
-%   h = passo da malha
-% OUTPUTS:
-%   u = próximo valor de u
-
-  u = u0 + h*f(t0 + h/2, u0 + (h/2)*f(t0, u0));
+  persistent A = [0,    0;
+                  1/2,  0];
+  persistent B = [0, 1];
+  persistent C = [0, 1/2];
+  k_size = max(size(B));
+  k = zeros(k_size, max(size(u0)));
+  for i=1:k_size
+    k(i, :) = f(t0 + h*C(i), u0 + h*sum(A(i,:)'.*k));
+  endfor
+  u = u0 + h*sum(B'.*k);
 endfunction
