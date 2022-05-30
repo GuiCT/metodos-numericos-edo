@@ -1,5 +1,5 @@
 function sol = AdamsMoulton(f, tspan, u0, h, method_simple, s)
-% sol = AdamsMoulton(f, tspan, u0, h)
+% sol = AdamsMoulton(f, tspan, u0, h, method_simple, s)
 % Executa um método numérico de Adams-Moulton de s estágios.
 % INPUTS:
 %   f = função du/dt = f(t, u).

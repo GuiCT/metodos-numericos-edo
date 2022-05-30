@@ -1,17 +1,4 @@
 function u = AdamsMoultonStep(f, f0, u0, h, s)
-% u = AdamsMoultonStep(f, t0, u0, h, s)
-% Executa um passo do método numérico de Adams-Moulton.
-% INPUTS:
-%   f = função du/dt = f(t, u)
-%   f0 = valores anteriores de f(t, u)
-%   u0 = último valor de anterior u
-%   h = passo da malha
-%   s = quantidade de estágios utilizados
-% OUTPUTS:
-%   u = próximo valor de u
-
-  % Tabela de coeficientes de Adams-Moulton.
-  % Variável persistente que é declarada uma vez.
   persistent C = [
     1,           0,              0,            0,              0,              0,          0,              0;
     1/2,         1/2,            0,            0,              0,              0,          0,              0;
@@ -22,7 +9,6 @@ function u = AdamsMoultonStep(f, f0, u0, h, s)
     19087/60480, 2713/2520,      -15487/20160, 586/945,        -6737/20160,    263/2520,   -863/60480,     0;
     5257/17280,  139849/120960,  -4511/4480,   123133/120960,  -88547/120960,  1537/4480,  -11351/120960,  275/24192];
   
-  % Último valor conhecido.
   u = u0;
   % Somando termos de Adams-Moulton.
   u += h*sum(C(s,1:s)'.*flipud(f0), 1);

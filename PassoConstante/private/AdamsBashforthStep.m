@@ -1,17 +1,4 @@
 function u = AdamsBashforthStep(f, f0, u0, h, s)
-% u = AdamsBashforthStep(f, t0, u0, h, s)
-% Executa um passo do método numérico de Adams-Bashforth.
-% INPUTS:
-%   f = função du/dt = f(t, u)
-%   f0 = valores anteriores de f(t, u)
-%   u0 = último valor anterior de u
-%   h = passo da malha
-%   s = quantidade de estágios utilizados
-% OUTPUTS:
-%   u = próximo valor de u
-
-  % Tabela de coeficientes de Adams-Bashforth.
-  % Variável persistente que é declarada uma vez.
   persistent C = [
     [1, 0, 0, 0, 0, 0, 0, 0];
     [3/2, -1/2, 0, 0, 0, 0, 0, 0];
@@ -23,7 +10,6 @@ function u = AdamsBashforthStep(f, f0, u0, h, s)
     [16083/4480, -1152169/120960, 242653/13440, -296053/13440, 2102243/120960, -115747/13440, 32863/13440, -5257/17280]
   ];
   
-  % Último valor conhecido
   u = u0;
   % Adiciona termo a termo do método de Adams-Bashforth.
   u += h*sum(C(s,1:s)'.*flipud(f0), 1);

@@ -1,5 +1,5 @@
 function sol = AdamsBashforth(f, tspan, u0, h, method_simple, s)
-% sol = AdamsBashforth(f, tspan, u0, h)
+% sol = AdamsBashforth(f, tspan, u0, h, method_simple, s)
 % Executa um método numérico de AdamsBashforth de s estágios.
 % INPUTS:
 %   f = função du/dt = f(t, u).
