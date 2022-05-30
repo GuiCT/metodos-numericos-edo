@@ -26,5 +26,5 @@ function u = AdamsBashforthStep(f, f0, u0, h, s)
   % Último valor conhecido
   u = u0;
   % Adiciona termo a termo do método de Adams-Bashforth.
-  u += h*dot(C(s,1:s), fliplr(f0));
+  u += h*sum(C(s,1:s)'.*flipud(f0));
 endfunction
