@@ -25,5 +25,5 @@ function u = AdamsMoultonStep(f, f0, u0, h, s)
   % Último valor conhecido.
   u = u0;
   % Somando termos de Adams-Moulton.
-  u += h*sum(C(s,1:s)'.*flipud(f0));
+  u += h*sum(C(s,1:s)'.*flipud(f0), 1);
 endfunction
