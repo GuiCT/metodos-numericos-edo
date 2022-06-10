@@ -22,4 +22,4 @@ function sol = AdamsMoulton(f, tspan, u0, h, method_simple, s)
 %     .fevals = número de vezes que a função f foi chamada.
 %     .telapsed = tempo de execução total em milissegundos.
 sol = multi_step(f, tspan, u0, h, method_simple, 'AM', s);
-endfunction
+end

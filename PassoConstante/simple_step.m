@@ -55,7 +55,7 @@ function sol = simple_step(f, tspan, u0, h, method)
     otherwise
       step = @MidpointMethodStep;
       fevals_per_step = 2;
-  endswitch
+  end
   % Guarda clock do momento antes do cálculo.
   clock1 = clock();
   
@@ -63,8 +63,8 @@ function sol = simple_step(f, tspan, u0, h, method)
     % Todos as linhas da coluna i são calculadas de uma vez.
     sol.u(i, :) = step(f, sol.t(i-1), sol.u(i-1,:), h);
     % Atualiza número de chamadas a função.
-    sol.fevals += fevals_per_step;
-  endfor
+    sol.fevals = sol.fevals + fevals_per_step;
+  end
   % Guarda clock do momento após o cálculo.
   clock2 = clock();
   % Calculando tempo total de execução.
@@ -73,4 +73,4 @@ function sol = simple_step(f, tspan, u0, h, method)
   % O valor é dado em segundos pela função etime e
   % transformado em milissegundos ao multiplicar por 1000.
   sol.telapsed = etime(clock2, clock1)*1000;
-endfunction
+end

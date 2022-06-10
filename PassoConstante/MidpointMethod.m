@@ -13,4 +13,4 @@ function sol = MidpointMethod(f, tspan, u0, h)
 %     .fevals = número de vezes que a função f foi chamada.
 %     .telapsed = tempo de execução total em milissegundos.
 sol = simple_step(f, tspan, u0, h, 'Midpoint');
-endfunction
+end
