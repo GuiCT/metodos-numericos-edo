@@ -78,8 +78,8 @@ switch(method_multi)
         step_multi = @AdamsMoultonStep;
         fevals_per_step_multi = 2;
 end
-% Guarda clock do momento antes do cálculo.
-clock1 = clock();
+% Utilizando mecanismo tic-toc do MATLAB para mensurar tempo de execução.
+tic;
 
 % Descobrindo os primeiros s pontos através de métodos de passo simples.
 for i = 2 : min(s, n)
@@ -117,12 +117,8 @@ for i = s+1 : n
     % A função f é várias vezes dependente do método.
     sol.fevals = sol.fevals + fevals_per_step_multi;
 end
-% Guarda clock do momento após o cálculo.
-clock2 = clock();
 % Calculando tempo total de execução.
-% Diferença entre o momento atual dado por clock() e
-% clock0 registrado anteriormente.
-% O valor é dado em segundos pela função etime e
-% transformado em milissegundos ao multiplicar por 1000.
-sol.telapsed = etime(clock2, clock1)*1000;
+% O valor é dado em segundos por toc, convertido em milissegundos
+% posteriormente.
+sol.telapsed = toc*1000;
 end
