@@ -1,4 +1,4 @@
-function new_h = adapt_stepsize(old_h, tol, normalized_error)
+function new_h = adapt_stepsize(old_h, tol, error)
 persistent S p_grow p_shrink;
 
 if isempty(S)
@@ -7,13 +7,12 @@ if isempty(S)
     p_shrink = 0.25;
 end
 
-if tol >= normalized_error
+if tol >= error
     p = p_shrink;
 else
     p = p_grow;
 end
 
-new_h = S*old_h*abs(tol/max(normalized_error)).^p;
+new_h = S*old_h*(tol/error).^p;
 
 end
-
