@@ -22,3 +22,6 @@ Dentre os futuros objetivos desta pasta estão:
 > **Uma matriz utilizada para armazenar os coeficientes de um Método Runge-Kutta, formulada por John C. Butcher
 
 Os métodos presentes nesta pasta utilizam um passo constante, utilizando de um domínio discreto regular. Planejo implementar métodos numéricos adaptativos em outra pasta, futuramente.
+
+---
+OBS: Alguns scripts escritos aqui utilizam de uma API antiga, e não irão funcionar. É intenção minha atualizar esses scripts no futuro.
